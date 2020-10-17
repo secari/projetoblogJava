@@ -19,18 +19,22 @@ public class CategoriaService {
     private CategoriaRepository repository;
 
     public Page<CategoriaModel> pg(PageRequest page){
+
         return repository.findAll(page);
     }
 
     public List<CategoriaModel> pg(Sort page){
+
         return repository.findAll(page);
     }
 
     public CategoriaModel find (Long id){
+
         return repository.findById(id).get();
     }
 
     public void delete (CategoriaModel item){
+
         repository.delete(item);
     }
 
