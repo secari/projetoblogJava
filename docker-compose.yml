@@ -1,0 +1,21 @@
+version: "3.5"
+services:
+  db:
+    image: mysql:5.7
+    container_name: projetoblogJava
+    networks:
+      - projetoblogJava
+    volumes:
+      - ./mysql/projetoblogJava:/var/lib/mysql
+    ports:
+      - "3342:3306"
+    environment:
+      TZ: "America/Sao_Paulo"
+      MYSQL_ROOT_PASSWORD: projetoblogJava
+      MYSQL_DATABASE: projetoblogJava
+      MYSQL_USER: projetoblogJava
+      MYSQL_PASSWORD: projetoblogJava2020
+
+networks:
+  projetoblogJava:
+    driver: bridge
