@@ -14,7 +14,7 @@ public class PostModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Long id;
     @Basic
     @Column(name = "titulo", nullable = true, length = 255)
     private String titulo;

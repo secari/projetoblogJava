@@ -84,7 +84,7 @@ public class CategoriaController {
         CategoriaModel vl = service.find(form.getId());
 
         if(vl == null || id != form.getId() || id == null || form.getId() == null || (id != null && id.intValue() <= 0) || (form.getId() != null && form.getId().intValue() <= 0)){
-            response.setData("Categoria não encontrada");
+            response.setData("Post não encontrada");
             return ResponseEntity.badRequest().body(response);
         }
 
