@@ -22,7 +22,7 @@ import java.util.List;
 public class CategoriaController {
 
     @Autowired
-    CategoriaService service;
+        CategoriaService service;
 
     @GetMapping("all")
     public ResponseEntity<Response<Page<CategoriaModel>>> all() {
