@@ -1,6 +1,7 @@
 package com.projetoblog.projetoblog.controllers;
 
 import com.projetoblog.projetoblog.models.CategoriaModel;
+import com.projetoblog.projetoblog.models.UserModel;
 import com.projetoblog.projetoblog.response.Response;
 import com.projetoblog.projetoblog.services.CategoriaService;
 import com.projetoblog.projetoblog.validators.CategoriaValidator;
@@ -88,7 +89,9 @@ public class CategoriaController {
             return ResponseEntity.badRequest().body(response);
         }
 
-        CategoriaModel pg = service.update(form.toModel());
+        form.setCriacao(vl.getCriacao());
+        CategoriaModel envio = form.toModel();
+        CategoriaModel pg = service.update(envio);
 
         response.setData(pg);
         return ResponseEntity.ok(response);

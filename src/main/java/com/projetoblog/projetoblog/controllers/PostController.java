@@ -1,5 +1,6 @@
 package com.projetoblog.projetoblog.controllers;
 import com.projetoblog.projetoblog.models.PostModel;
+import com.projetoblog.projetoblog.models.UserModel;
 import com.projetoblog.projetoblog.response.Response;
 import com.projetoblog.projetoblog.services.PostService;
 import com.projetoblog.projetoblog.validators.PostValidator;
@@ -89,7 +90,9 @@ public class PostController {
             return ResponseEntity.badRequest().body(response);
         }
 
-        PostModel pg = service.update(form.toModel());
+        form.setCriacao(vl.getCriacao());
+        PostModel envio = form.toModel();
+        PostModel pg = service.update(envio);
 
         response.setData(pg);
         return ResponseEntity.ok(response);

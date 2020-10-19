@@ -96,8 +96,8 @@ public class AuthenticationController {
 		String token = jwtTokenUtil.obterToken(userDetails);
 		response.setData(new TokenValidate(token));
 
-		HashMap<String, UserModel> cadsatro = new HashMap<String, UserModel>();
-		cadsatro.put("perfil",cadastroService.findByEmail(userDetails.getUsername()));
+		HashMap<String, UserModel> cadastro = new HashMap<String, UserModel>();
+		cadastro.put("perfil",cadastroService.findByEmail(userDetails.getUsername()));
 
 
 		return ResponseEntity.ok(response);
@@ -133,5 +133,4 @@ public class AuthenticationController {
 		response.setData(new TokenValidate(refreshedToken));
 		return ResponseEntity.ok(response);
 	}
-
 }

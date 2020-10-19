@@ -89,10 +89,11 @@ public class UserController {
             return ResponseEntity.badRequest().body(response);
         }
 
-        UserModel pg = service.update(form.toModel());
+        form.setCriacao(vl.getCriacao());
+        UserModel envio = form.toModel();
+        UserModel pg = service.update(envio);
 
         response.setData(pg);
         return ResponseEntity.ok(response);
     }
-
 }

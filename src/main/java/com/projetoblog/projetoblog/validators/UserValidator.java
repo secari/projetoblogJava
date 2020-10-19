@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
 
 @Data
 public class UserValidator {
@@ -22,6 +23,7 @@ public class UserValidator {
     @NotNull(message = "Status é obrigatório")
     private Integer status;
 
+    private Timestamp criacao;
 
     public UserModel toModel(){
         UserModel item = new UserModel();
@@ -33,6 +35,7 @@ public class UserValidator {
         item.setEmail(email);
         item.setPassword(password);
         item.setStatus(status);
+        item.setCriacao(criacao);
 
         return item;
     }
