@@ -11,10 +11,10 @@ import java.util.Objects;
 public class PostCategoriaModelPK implements Serializable {
     @Column(name = "id_post", nullable = false)
     @Id
-    private Integer idPost;
+    private Long idPost;
 
     @Column(name = "id_categoria", nullable = false)
     @Id
-    private Integer idCategoria;
+    private Long idCategoria;
 
 }

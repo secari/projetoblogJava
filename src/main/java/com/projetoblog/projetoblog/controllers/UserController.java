@@ -24,7 +24,6 @@ public class UserController {
     @Autowired
         UserService service;
 
-
     @GetMapping("all")
     public ResponseEntity<Response<Page<UserModel>>> all() {
 

@@ -3,7 +3,6 @@ package com.projetoblog.projetoblog.models;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Data
 @Entity
@@ -13,11 +12,11 @@ public class PostCategoriaModel {
 
     @Id
     @Column(name = "id_post", nullable = false)
-    private Integer idPost;
+    private Long idPost;
 
     @Id
     @Column(name = "id_categoria", nullable = false)
-    private Integer idCategoria;
+    private Long idCategoria;
 
 //    @ManyToOne
 //    @JoinColumn(name = "id_post", referencedColumnName = "id", nullable = false)

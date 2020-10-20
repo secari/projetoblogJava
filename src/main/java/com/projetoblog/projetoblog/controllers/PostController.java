@@ -1,7 +1,10 @@
 package com.projetoblog.projetoblog.controllers;
+import com.projetoblog.projetoblog.models.PostCategoriaModel;
 import com.projetoblog.projetoblog.models.PostModel;
 import com.projetoblog.projetoblog.models.UserModel;
 import com.projetoblog.projetoblog.response.Response;
+import com.projetoblog.projetoblog.security.JwtUser;
+import com.projetoblog.projetoblog.services.PostCategoriaService;
 import com.projetoblog.projetoblog.services.PostService;
 import com.projetoblog.projetoblog.validators.PostValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +12,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityManager;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -24,6 +29,12 @@ public class PostController {
 
     @Autowired
     PostService service;
+
+    @Autowired
+    PostCategoriaService serviceBelongs;
+
+    @Autowired
+    EntityManager entityManager;
 
     @GetMapping("all")
     public ResponseEntity<Response<Page<PostModel>>> all() {
@@ -70,17 +81,29 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<Response<PostModel>> newItem(@Valid @RequestBody PostValidator form){
+    public ResponseEntity<Response<PostModel>> newItem(@AuthenticationPrincipal JwtUser user, @Valid @RequestBody PostValidator form){
         Response<PostModel> response = new Response<PostModel>();
-
+        form.setIdUsuario(user.getId());
         PostModel pg = service.save(form.toModel());
+
+        if(form.getIdsCategorias() != null && form.getIdsCategorias().size() > 0){
+            form.getIdsCategorias().forEach(i -> {
+                PostCategoriaModel relacao = new PostCategoriaModel();
+
+                relacao.setIdPost(pg.getId());
+                relacao.setIdCategoria(i);
+
+                serviceBelongs.save(relacao);
+            });
+        }
+
 
         response.setData(pg);
         return ResponseEntity.ok(response);
     }
 
     @PatchMapping("{id}")
-    public ResponseEntity<Response<Object>> update(@PathVariable Long id, @Valid @RequestBody PostValidator form){
+    public ResponseEntity<Response<Object>> update(@AuthenticationPrincipal JwtUser user, @PathVariable Long id, @Valid @RequestBody PostValidator form){
         Response<Object> response = new Response<Object>();
 
         PostModel vl = service.find(form.getId());
@@ -90,11 +113,33 @@ public class PostController {
             return ResponseEntity.badRequest().body(response);
         }
 
+
+
         form.setCriacao(vl.getCriacao());
         PostModel envio = form.toModel();
+        envio.setIdUsuario(user.getId());
         PostModel pg = service.update(envio);
 
-        response.setData(pg);
+        if(form.getIdsCategorias() != null && form.getIdsCategorias().size() > 0){
+            serviceBelongs.findIdPost(pg.getId()).forEach(j ->{
+                serviceBelongs.delete(j);
+            });
+
+            form.getIdsCategorias().forEach(i -> {
+                PostCategoriaModel relacao = new PostCategoriaModel();
+
+                relacao.setIdPost(form.getId());
+                relacao.setIdCategoria(i);
+
+                serviceBelongs.save(relacao);
+            });
+        }
+
+        entityManager.clear();
+
+        PostModel pg2 = service.find(form.getId());
+
+        response.setData(pg2);
         return ResponseEntity.ok(response);
     }
 }

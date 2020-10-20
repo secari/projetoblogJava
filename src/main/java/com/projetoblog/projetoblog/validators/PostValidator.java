@@ -6,6 +6,7 @@ import lombok.Data;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 public class PostValidator {
@@ -18,7 +19,6 @@ public class PostValidator {
 
     private Long id;
 
-    @NotEmpty(message = "Descrição é obrigatório")
     private String descricao;
 
     private String conteudo;
@@ -27,6 +27,8 @@ public class PostValidator {
 
     @NotNull(message = "Status é obrigatório")
     private Integer status;
+
+    private Long idUsuario;
 
     public PostModel toModel(){
         PostModel item = new PostModel();
@@ -40,7 +42,13 @@ public class PostValidator {
         item.setConteudo(conteudo);
         item.setAutores(autor);
         item.setCriacao(criacao);
+        item.setIdUsuario(idUsuario);
 
         return item;
     }
+
+    @NotEmpty(message = "Id de categoria é obrigatório")
+    private List<Long> idsCategorias;
+
+
 }

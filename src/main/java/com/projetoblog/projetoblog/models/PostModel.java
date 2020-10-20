@@ -36,10 +36,19 @@ public class PostModel {
     @Basic
     @Column(name = "descricao", nullable = true, length = -1)
     private String descricao;
-//    @OneToMany(mappedBy = "postsByIdPost")
-//    private Collection<PostCategoriaModel> postCategoriasById;
-//    @ManyToOne
-//    @JoinColumn(name = "id_usuario", referencedColumnName = "id", nullable = false)
-//    private UserModel usersByIdUsuario;
+
+    @Basic
+    @Column(name = "id_usuario", nullable = true, length = -1)
+    private Long idUsuario;
+
+    @ManyToMany
+    @JoinTable(name="post_categoria",
+            joinColumns={@JoinColumn(name="id_post")},
+            inverseJoinColumns={@JoinColumn(name="id_categoria")})
+    private Collection<CategoriaModel> categorias;
+
+    @ManyToOne
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id", nullable = false, updatable = false, insertable = false)
+    private UserModel usuario;
 
 }
